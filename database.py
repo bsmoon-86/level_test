@@ -46,3 +46,31 @@ class MyDB1:
 
         # result 되돌려준다.
         return result
+    ## 일반 함수 생성
+    def sql_query2(self, sql, *values):
+        # DB server 연결 -> _db 변수를 생성
+        _db = pymysql.connect(
+            host = self.host, 
+            port = self.port, 
+            user = self.user, 
+            password = self.password, 
+            db = self.database
+        )
+        # cursor 생성 
+        cursor = _db.cursor(pymysql.cursors.DictCursor)
+
+        # sql, values 값을 가지고 execute()
+        cursor.execute(sql, values)
+
+        # sql 값이 select문인가?
+        if sql.lower().split()[0] == 'select':
+            result = cursor.fetchall()
+        else:
+            _db.commit()
+            result = "Query OK"
+        
+        # DB server와의 연결을 종료
+        _db.close()
+
+        # result 되돌려준다.
+        return result
