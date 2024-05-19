@@ -37,9 +37,12 @@ def answer_submit():
         (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
     print(len(insert_data))
-    db_res = mydb.sql_query(insert_query, insert_data)
-    print(answers['user'], db_res)
-    return str(answer_cnt * 10)
+    try:
+        db_res = mydb.sql_query(insert_query, insert_data)
+        print(answers['user'], db_res)
+        return render_template('result.html', name = answers['user'], score = answer_cnt * 10)
+    except:
+        return "이미 응시하셨습니다."
 
 
 
